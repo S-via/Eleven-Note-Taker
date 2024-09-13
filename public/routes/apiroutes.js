@@ -1,27 +1,29 @@
 const fs = require('fs')
-const express = require('express').Router();
-const jsonData = require('./db.json');
 const PORT = 3001;
-const app = express();
 
+const express = require('express')
+const app = express();
+const path = require('path');
 // const util = require ('util')
 
-// Function for readFile 
-// function for readAndAppend
-///////////////////////////////
+// Function for readFile() to read db.json
+// function for readAndAppend() 
 
+app.use(express.static('public'));
 // GET API Route for /notes and read db.json 
-app.get('/notes',(req,res)=> res.json(jsonData));
+app.get('/api/notes',(req,res)=> {
+    res.sendFile(path.join(__dirname, '/db.db.json'))});
 
 // return saved notes as JSON
 
+app.use('/api/notes',(req,res)=> 
+    readFromFile('/db.db.json')).then((data) => res.json(JSON.parse(data))); 
 
+// POST API /api/notes 
+// recieve new note and save it to requestbody 
+// and add it to db.json
 
-app.get('/notes',(req,res)=> 
-    readFromFile('db/db.json.')).then((data) => res.json(JSON.parse(data)));
-
-// POST API route from notes.html recieve new note and save it to requestbody and add it to db.json
-notes.post('/api/notes',(req,res) => {
+/* app.post('/api/notes',(req,res) => {
     console.log(req.body);
     const {} = req.body;
     if (req.body){
@@ -34,4 +36,8 @@ notes.post('/api/notes',(req,res) => {
         // res.json()
     }
 })
-module.exports = notes ;
+module.exports = notes ; */
+
+app.listen(PORT,()=>{
+    console.log(`api http://localhost:${PORT}`)
+});
