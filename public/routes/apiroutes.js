@@ -1,43 +1,44 @@
-const fs = require('fs')
+/* const fs = require('fs')
 const PORT = 3001;
 
 const express = require('express')
 const app = express();
 const path = require('path');
-// const util = require ('util')
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
 // Function for readFile() to read db.json
 // function for readAndAppend() 
 
-app.use(express.static('public'));
-// GET API Route for /notes and read db.json 
+// GET API Route for /notes should read db.json 
 app.get('/api/notes',(req,res)=> {
-    res.sendFile(path.join(__dirname, '/db.db.json'))});
-
+res.sendFile(path.join(__dirname, '/public/notes.html'))});
 // return saved notes as JSON
 
-app.use('/api/notes',(req,res)=> 
-    readFromFile('/db.db.json')).then((data) => res.json(JSON.parse(data))); 
-
 // POST API /api/notes 
-// recieve new note and save it to requestbody 
+// recieve as a new note to save on the requestbody 
 // and add it to db.json
 
-/* app.post('/api/notes',(req,res) => {
-    console.log(req.body);
-    const {} = req.body;
+app.post('/api/notes',(req,res) => {})
+
+   /*  const readFile = fs.readFile('./db.json')
+    .then((data) => 
+        JSON.parse(data));
+    
+    const {title, text} = req.body;
     if (req.body){
         const newNote ={
             title,
             text,
-            Newid: uuidv4(),
+            Newid: uuid(),
         };
-        readAndAppend(newNote,'db/db.json');
-        // res.json()
-    }
-})
-module.exports = notes ; */
 
+
+        fs.writeFile('./db.json',JSON.stringify(readFile)); */
+        // res.json()
+    
+/* 
 app.listen(PORT,()=>{
-    console.log(`api http://localhost:${PORT}`)
-});
+    console.log(`api http://localhost:${PORT}`) 
+}); */
