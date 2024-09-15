@@ -3,7 +3,7 @@ const fs = require('fs');
 const express = require('express');
 const path = require('path');
 const PORT = process.env.port || 3001;
-const notes = require('db/db.json');
+const notes = require('./db/db.json');
 
 const app = express();
 
@@ -22,7 +22,7 @@ app.get('/notes', (req, res) =>
 
 ///// GET API route for /notes should read db.json & return svaed notes as JSON/////
 app.get('/api/notes', (req, res) => {
-    fs.readfile(path.join(__dirname, 'db.json'), 'utf8', (err, data) => {
+    fs.readfile(path.join(__dirname, 'db','db.json'), 'utf8', (err, data) => {
         if (err) {
             console.error(err);
             return res.json(JSON.parse(data))
