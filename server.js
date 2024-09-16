@@ -26,7 +26,7 @@ app.get('/api/notes', (req, res) => {
     fs.readFile(path.join(__dirname, 'db', 'db.json'), 'utf8', (err, data) => {
         if (err) {
             console.error(err);
-            return res.json(JSON.parse(data))
+            res.json(JSON.parse(data))
         }
     })
 })
@@ -47,23 +47,38 @@ app.post('/api/notes', (req, res) => {
             status:'suceess',
             body: newNote,
         } */
+       
+       console.log(newNote);
+       
+       //// readFile one more time before writing or parse it the write it 
+       fs.readFile(path.join(__dirname, 'db', 'db.json'), 'utf-8', (err, data) => {
+           if (err) {
+               console.log(err);
 
-        console.log(newNote);
-    }
+               
+            }
+            const writeFileData = JSON.parse(data) 
+            console.log(writeFileData)
+            writeFileData.push(newNote)
+            fs.writeFile('db/db.json',JSON.stringify(writeFileData),'utf-8', (err) => {
+                if (err) {
+                    console.log('error to write file', err);
+                }
+                else {
+                    res.status(200)
+                    console.log('file has been written');
+                }
+            
+            })
+        })
+        /// and add it to db.json 
+       }})
+        
+    // FIRST ATEMPT// fs.writeFile(path.join(__dirname, 'db', 'db.json'), JSON.stringify(notes))
 
-    //// readFile one more time before writing or parse it the write it 
-    fs.readFile(path.join(__dirname, 'db', 'db.json'), 'utf-8', (err, data) => {
-        if (err) {
-            console.log(err);
-            return res.json(JSON.parse(data))
-        }
-    })
-    /// and add it to db.json 
-    fs.writeFile(path.join(__dirname, 'db', 'db.json'), JSON.stringify(notes))
-})
 
 
 
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`)
-});
+    app.listen(PORT, () => {
+        console.log(`Server is running on http://localhost:${PORT}`)
+    });
