@@ -2,8 +2,9 @@
 const fs = require('fs');
 const express = require('express');
 const path = require('path');
-const PORT = process.env.port || 3001;
+const PORT = process.env.PORT || 3001;
 const notes = require('./db/db.json');
+const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 
@@ -20,9 +21,9 @@ app.get('/', (req, res) =>
 app.get('/notes', (req, res) =>
     res.sendFile(path.join(__dirname, '/public/notes.html')));
 
-///// GET API route for /notes should read db.json & return svaed notes as JSON/////
+///// GET API route for /notes should read db.json & return saved notes as JSON/////
 app.get('/api/notes', (req, res) => {
-    fs.readfile(path.join(__dirname, 'db', 'db.json'), 'utf8', (err, data) => {
+    fs.readFile(path.join(__dirname, 'db', 'db.json'), 'utf8', (err, data) => {
         if (err) {
             console.error(err);
             return res.json(JSON.parse(data))
@@ -40,24 +41,26 @@ app.post('/api/notes', (req, res) => {
         const newNote = {
             title,
             text,
-            Newid: uuid(),
+            id: uuidv4(),
         };
-    /* const response ={
-        status:'suceess',
-        body: newNote,
-    } */
+        /* const response ={
+            status:'suceess',
+            body: newNote,
+        } */
 
-        console.log(newNote);}
+        console.log(newNote);
+    }
 
-        fs.readFile(path.join(__dirname, 'db', 'db.json'), 'utf-8', (err, data) => {
-            if (err) {
-                console.log(err);
-                return res.json(JSON.parse(data))
-            }})
-        fs.writeFile(path.join(__dirname, 'db', 'db.json'), JSON.stringify(newNote))
+    //// readFile one more time before writing or parse it the write it 
+    fs.readFile(path.join(__dirname, 'db', 'db.json'), 'utf-8', (err, data) => {
+        if (err) {
+            console.log(err);
+            return res.json(JSON.parse(data))
+        }
+    })
+    /// and add it to db.json 
+    fs.writeFile(path.join(__dirname, 'db', 'db.json'), JSON.stringify(notes))
 })
-//// readFile one more time before writing or parse it the write it ?
-/// and add it to db.json 
 
 
 
