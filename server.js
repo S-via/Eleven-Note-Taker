@@ -70,7 +70,7 @@ app.post('/api/notes', (req, res) => {
                 }
                 else {
                     // respond to front end with 
-                    res.json.status(200)
+                    res.status(200)
                     console.log('file has been written');
                 }
 

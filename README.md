@@ -27,6 +27,6 @@ When clicked on an existing note in the list on the left-hand column<br>
 Then a note appears in the right-hand column and a "New Note" button in the navigation at the top of the page<br> 
 []() photo goes here<-- <br>
 
-When clicked on the " New Note" button int he navigation at the top of the page <br>
+When clicked on the " Note Taker" button int he navigation at the top of the page <br>
 You will be presented with empty field to enter a new note title and the note's text in the right-hand column and the button disappears<br>
 []() photo goes here<-- <br>
