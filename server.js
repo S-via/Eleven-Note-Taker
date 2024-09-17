@@ -3,7 +3,7 @@ const fs = require('fs');
 const express = require('express');
 const path = require('path');
 const PORT = process.env.PORT || 3001;
-const notes = require('./db/db.json');
+
 const { v4: uuidv4 } = require('uuid');
 
 const app = express();
@@ -26,6 +26,10 @@ app.get('/api/notes', (req, res) => {
     fs.readFile(path.join(__dirname, 'db', 'db.json'), 'utf8', (err, data) => {
         if (err) {
             console.error(err);
+
+            res.json(err)
+        } else {
+            // respond with the data 
             res.json(JSON.parse(data))
         }
     })
@@ -43,39 +47,43 @@ app.post('/api/notes', (req, res) => {
             text,
             id: uuidv4(),
         };
-       
-       
-       console.log(newNote);
-       
-       //// readFile one more time before writing // parse it then write it 
-       fs.readFile(path.join(__dirname, 'db', 'db.json'), 'utf-8', (err, data) => {
-           if (err) {
-               console.log(err);
 
-               
+
+        console.log(newNote);
+
+        //// readFile one more time before writing // parse it then write it 
+        fs.readFile(path.join(__dirname, 'db', 'db.json'), 'utf-8', (err, data) => {
+            if (err) {
+                console.log(err);
+
+
             }
-            const writeFileData = JSON.parse(data) 
+            const writeFileData = JSON.parse(data)
             console.log(writeFileData)
             writeFileData.push(newNote)
             /// and add it to db.json 
-            fs.writeFile('db/db.json',JSON.stringify(writeFileData),'utf-8', (err) => {
+            fs.writeFile('db/db.json', JSON.stringify(writeFileData), 'utf-8', (err) => {
                 if (err) {
+                    // respond to fornt end  withan err
+                    res.send(err)
                     console.log('error to write file', err);
                 }
                 else {
-                    res.status(200)
+                    // respond to front end with 
+                    res.json.status(200)
                     console.log('file has been written');
                 }
-            
+
             })
         })
-       }})
-        
-    // FIRST ATEMPT// fs.writeFile(path.join(__dirname, 'db', 'db.json'), JSON.stringify(notes))
+    }
+})
+
+// FIRST ATEMPT// fs.writeFile(path.join(__dirname, 'db', 'db.json'), JSON.stringify(notes))
 
 
 
 
-    app.listen(PORT, () => {
-        console.log(`Server is running on http://localhost:${PORT}`)
-    });
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`)
+});
