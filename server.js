@@ -64,7 +64,7 @@ app.post('/api/notes', (req, res) => {
             /// and add it to db.json 
             fs.writeFile('db/db.json', JSON.stringify(writeFileData), 'utf-8', (err) => {
                 if (err) {
-                    // respond to fornt end  withan err
+                    // respond to fornt end  with an err
                     res.send(err)
                     console.log('error to write file', err);
                 }
