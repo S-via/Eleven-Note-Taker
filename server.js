@@ -43,14 +43,11 @@ app.post('/api/notes', (req, res) => {
             text,
             id: uuidv4(),
         };
-        /* const response ={
-            status:'suceess',
-            body: newNote,
-        } */
+       
        
        console.log(newNote);
        
-       //// readFile one more time before writing or parse it the write it 
+       //// readFile one more time before writing // parse it then write it 
        fs.readFile(path.join(__dirname, 'db', 'db.json'), 'utf-8', (err, data) => {
            if (err) {
                console.log(err);
@@ -60,6 +57,7 @@ app.post('/api/notes', (req, res) => {
             const writeFileData = JSON.parse(data) 
             console.log(writeFileData)
             writeFileData.push(newNote)
+            /// and add it to db.json 
             fs.writeFile('db/db.json',JSON.stringify(writeFileData),'utf-8', (err) => {
                 if (err) {
                     console.log('error to write file', err);
@@ -71,7 +69,6 @@ app.post('/api/notes', (req, res) => {
             
             })
         })
-        /// and add it to db.json 
        }})
         
     // FIRST ATEMPT// fs.writeFile(path.join(__dirname, 'db', 'db.json'), JSON.stringify(notes))
